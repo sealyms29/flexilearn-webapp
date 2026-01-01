@@ -1,5 +1,5 @@
 export const INITIAL_STATE = {
-  userId: JSON.parse(localStorage.getItem("currentUser"))?._id,
+  userId: "", // Will be set dynamically in Add.jsx
   title: "",
   cat: "",
   cover: "",

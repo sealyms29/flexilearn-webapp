@@ -46,6 +46,47 @@ const Gig = () => {
     }
   };
 
+  // Handle contact seller - create conversation and navigate to message
+  const handleContactSeller = async () => {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      alert("Please register or login to contact the seller");
+      navigate("/register");
+      return;
+    }
+
+    // Prevent contacting yourself
+    if (currentUser._id === data.userId) {
+      alert("You cannot message yourself!");
+      return;
+    }
+
+    try {
+      // Create conversation with the seller
+      const response = await newRequest.post("/conversations", {
+        to: data.userId, // Send to seller
+      });
+
+      // Use the conversation ID from the response
+      if (response.data && response.data.id) {
+        navigate(`/message/${response.data.id}`);
+      } else {
+        alert("Failed to get conversation ID. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error creating conversation:", err);
+      if (err.response?.status === 409) {
+        // Conversation might already exist, try to navigate using constructed ID
+        const conversationId = currentUser._id < data.userId 
+          ? currentUser._id + data.userId 
+          : data.userId + currentUser._id;
+        navigate(`/message/${conversationId}`);
+      } else {
+        alert("Failed to start conversation. Please try again.");
+      }
+    }
+  };
+
   if (isLoading || isLoadingUser) {
     // Render a loading state
     return "Loading...";
@@ -79,9 +120,9 @@ const Gig = () => {
                 />
                 <span>{dataUser.username}</span>
 
-                {!isNaN(data.totalStars / data.starNumber) && (
+                {data.starNumber > 0 && data.totalStars >= 0 && (
                   <div className="stars">
-                    { Array(Math.round(data.totalStars / data.starNumber))
+                    { Array(Math.max(0, Math.round(data.totalStars / data.starNumber)))
                       .fill()
                       .map((item, i) => (
                         <img src="/img/star.png" alt="" key={i} />
@@ -92,11 +133,13 @@ const Gig = () => {
               </div>
             )}
 
-            <Slider slidesToShow={1} arrowsScroll={1}    className="slider">
+            <Slider slidesToShow={1} arrowsScroll={1} className="slider">
                {
-                data.images.map((img)=>(
-                  < img key={img} src={img} alt="" />
-                ))
+                (data.images && Array.isArray(data.images) && data.images.length > 0) 
+                  ? data.images.map((img)=>(
+                      <img key={img} src={img} alt="" />
+                    ))
+                  : <img src={data.cover || "/img/placeholder.png"} alt="Gig cover" />
                }
           </Slider>
           <h2>About This Gig</h2>
@@ -109,9 +152,9 @@ const Gig = () => {
             <img src={dataUser.img || "/img/girl.png"} alt="" />
                 <div className="info">
                   <span>{dataUser.username}</span>
-                      {!isNaN(data.totalStars / data.starNumber) && (
+                      {data.starNumber > 0 && data.totalStars >= 0 && (
                         <div className="star">
-                          {Array(Math.round(data.totalStars / data.starNumber))
+                          {Array(Math.max(0, Math.round(data.totalStars / data.starNumber)))
                             .fill()
                             .map((item, i) => (
                               <img src="/img/star.png" alt="" key={i} />
@@ -121,7 +164,7 @@ const Gig = () => {
                           </span>
                         </div>
                       )}
-                    <button>Contact Me</button>
+                    <button onClick={handleContactSeller}>Contact Me</button>
                 </div>
             </div>
             <div className="box">
