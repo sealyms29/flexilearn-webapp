@@ -37,33 +37,6 @@ const Home = () => {
           }
         </Slide>
 
-        {!isLoading && !error && data && data.length > 0 && (
-          <>
-            <div style={{padding: '20px', textAlign: 'center'}}>
-              <h2>Popular Services</h2>
-            </div>
-            <Slide slidesToShow={3} arrowsScroll={3}>
-              {
-                data.slice(0, 8).map(gig=>(
-                  <GigCard key={gig._id} item={gig}/>
-                ))
-              }
-            </Slide>
-          </>
-        )}
-        {isLoading && (
-          <div style={{padding: '20px', textAlign: 'center'}}>
-            <h2>Popular Services</h2>
-            <p>Loading services...</p>
-          </div>
-        )}
-        {!isLoading && error && (
-          <div style={{padding: '20px', textAlign: 'center'}}>
-            <h2>Popular Services</h2>
-            <p>Unable to load services at this time</p>
-          </div>
-        )}
-
         <div className='features'>
           <div className="container">
              <div className="item">
