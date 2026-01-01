@@ -19,6 +19,8 @@ import {
 } from "@tanstack/react-query";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import { NotificationProvider } from "./context/NotificationContext";
+import Notification from "./components/notification/Notification";
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,9 +29,12 @@ function App() {
     return (
       <div className="app">
         <QueryClientProvider client={queryClient}>
-          <Navbar />
-          <Outlet />
-          <Footer />
+          <NotificationProvider>
+            <Navbar />
+            <Notification />
+            <Outlet />
+            <Footer />
+          </NotificationProvider>
         </QueryClientProvider>
       </div>
     );

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
+import { useUnreadMessagesCount } from "../../hooks/useUnreadMessages";
 import "./Navbar.scss";
 
 function Navbar() {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const unreadCount = useUnreadMessagesCount();
 
   const { pathname } = useLocation();
 
@@ -67,8 +69,11 @@ function Navbar() {
                   <Link className="link" to="/orders">
                     Orders
                   </Link>
-                  <Link className="link" to="/messages">
+                  <Link className="link" to="/messages" className="messages-link">
                     Messages
+                    {unreadCount > 0 && (
+                      <span className="unread-badge">{unreadCount}</span>
+                    )}
                   </Link>
                   <Link className="link" onClick={handleLogout}>
                     Logout
