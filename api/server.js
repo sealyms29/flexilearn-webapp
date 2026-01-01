@@ -46,7 +46,7 @@ app.use("/api/reviews",reviewRoute);
 
 // middleware for error 
 app.use((err,req,res,next)=>{
-  console.error("Error occurred:", err);
+  console.error("Error message:", err.message);
   const errorStatus = err.status || 500;
   const errMessage = err.message || "Something went wrong"
 
