@@ -28,6 +28,17 @@ export const register = async (req, res, next) => {
       return next(createError(400, "Password must be 6-8 characters with ONE uppercase letter, ONE number, and ONE special character (!@#$%^&*)"));
     }
     
+    // Enforce UNIMAS student email
+    const unimasEmailRegex = /^[0-9]+@siswa\.unimas\.my$/;
+    if (!unimasEmailRegex.test(req.body.email)) {
+      return next(createError(400, "Only UNIMAS student emails are allowed"));
+    }
+
+    // Prevent email being used as username
+    if (req.body.username.includes("@")) {
+      return next(createError(400, "Username must be a name, not an email"));
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ 
       $or: [{ username: req.body.username }, { email: req.body.email }] 
@@ -61,6 +72,7 @@ export const login = async (req, res, next) => {
 
     if (!user) return next(createError(404, "User not found!"));
     
+    //Block non-students
     if (!user.isStudent) {
       return next(createError(403, "Access restricted to UNIMAS students only"));
     }
@@ -69,7 +81,7 @@ export const login = async (req, res, next) => {
     if (!user.isVerified) {
       return next(createError(403, "Student account not verified"));
     }
-    
+
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
     if (!isCorrect)
       return next(createError(400, "Wrong password or username!"));
