@@ -75,8 +75,8 @@ const Register = () => {
           <label htmlFor="">Username</label>
           <input
             name="username"
-            type="text"
-            placeholder="arvindk25"
+            type="email"
+            placeholder="123456@siswa.unimas.my"
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>

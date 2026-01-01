@@ -16,6 +16,18 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  isStudent: {
+    type: Boolean,
+    default: true,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false, 
+  },
+  studentId: {
+    type: String, 
+    required: true,
+  },
   img: {
     type: String,
     required: false,
