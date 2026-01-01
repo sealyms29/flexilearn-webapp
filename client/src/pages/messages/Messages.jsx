@@ -6,6 +6,41 @@ import { useNotification } from "../../context/NotificationContext";
 import "./Messages.scss";
 import moment from "moment";
 
+// Component to display username for each conversation
+const ConversationRow = ({ conversation, currentUser, onRead }) => {
+  const otherUserId = currentUser.isSeller ? conversation.buyerId : conversation.sellerId;
+  
+  const { data: userData } = useQuery({
+    queryKey: ["user", otherUserId],
+    queryFn: () =>
+      newRequest.get(`/users/${otherUserId}`).then((res) => {
+        return res.data;
+      }),
+  });
+
+  const isUnread = (currentUser.isSeller && !conversation.readBySeller) ||
+    (!currentUser.isSeller && !conversation.readByBuyer);
+
+  return (
+    <tr className={isUnread && "active"} key={conversation.id}>
+      <td>{userData?.username || otherUserId}</td>
+      <td>
+        <Link to={`/message/${conversation.id}`} className="link">
+          {conversation?.lastMessage?.substring(0, 100)}...
+        </Link>
+      </td>
+      <td>{moment(conversation.updatedAt).fromNow()}</td>
+      <td>
+        {isUnread && (
+          <button onClick={() => onRead(conversation.id)}>
+            Mark as Read
+          </button>
+        )}
+      </td>
+    </tr>
+  );
+};
+
 const Messages = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const { addNotification } = useNotification();
@@ -57,30 +92,12 @@ const Messages = () => {
               <th>Action</th>
             </tr>
             {data.map((c) => (
-              <tr
-                className={
-                  ((currentUser.isSeller && !c.readBySeller) ||
-                    (!currentUser.isSeller && !c.readByBuyer)) &&
-                  "active"
-                }
+              <ConversationRow 
                 key={c.id}
-              >
-                <td>{currentUser.isSeller ? c.buyerId : c.sellerId}</td>
-                <td>
-                  <Link to={`/message/${c.id}`} className="link">
-                    {c?.lastMessage?.substring(0, 100)}...
-                  </Link>
-                </td>
-                <td>{moment(c.updatedAt).fromNow()}</td>
-                <td>
-                  {((currentUser.isSeller && !c.readBySeller) ||
-                    (!currentUser.isSeller && !c.readByBuyer)) && (
-                    <button onClick={() => handleRead(c.id)}>
-                      Mark as Read
-                    </button>
-                  )}
-                </td>
-              </tr>
+                conversation={c} 
+                currentUser={currentUser} 
+                onRead={handleRead}
+              />
             ))}
           </table>
         </div>

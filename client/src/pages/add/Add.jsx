@@ -1,10 +1,11 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import "./Add.scss";
 import { gigReducer, INITIAL_STATE } from "../../reducers/gigReducer";
 import upload from "../../utils/upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import getCurrentUser from "../../utils/getCurrentUser";
 
 const Add = () => {
   const [singleFile, setSingleFile] = useState(undefined);
@@ -12,6 +13,17 @@ const Add = () => {
   const [uploading, setUploading] = useState(false);
 
   const [state, dispatch] = useReducer(gigReducer, INITIAL_STATE);
+
+  // Set userId dynamically from current authenticated user
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      dispatch({
+        type: "CHANGE_INPUT",
+        payload: { name: "userId", value: currentUser._id },
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     dispatch({

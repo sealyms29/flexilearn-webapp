@@ -14,12 +14,39 @@ const Message = () => {
 
   const queryClient = useQueryClient();
 
+  // Fetch messages
   const { isLoading, error, data } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
       newRequest.get(`/messages/${id}`).then((res) => {
         return res.data;
       }),
+  });
+
+  // Fetch conversation details to get recipient info
+  const { data: conversationData } = useQuery({
+    queryKey: ["conversation", id],
+    queryFn: () =>
+      newRequest.get(`/conversations/single/${id}`).then((res) => {
+        return res.data;
+      }),
+  });
+
+  // Get recipient ID based on current user role
+  const recipientId = conversationData
+    ? currentUser?.isSeller
+      ? conversationData.buyerId
+      : conversationData.sellerId
+    : null;
+
+  // Fetch recipient user details to get their username
+  const { data: recipientData } = useQuery({
+    queryKey: ["user", recipientId],
+    queryFn: () =>
+      newRequest.get(`/users/${recipientId}`).then((res) => {
+        return res.data;
+      }),
+    enabled: !!recipientId, // Only fetch when we have a recipientId
   });
 
   // Auto-scroll to latest message
@@ -62,7 +89,7 @@ const Message = () => {
     <div className='message'>
       <div className="container">
         <span className='breadcrumbs'>
-           <Link to="/messages">Messages</Link> ➤ John Doe ➤
+           <Link to="/messages">Messages</Link> ➤ {recipientData?.username || recipientId || "Loading..."} ➤
         </span>
 
         {isLoading ? "loading" :error ? "error" :
