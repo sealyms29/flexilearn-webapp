@@ -11,23 +11,52 @@ const Gigs = () => {
   const[open, setOpen] = useState(false);
   const minRef = useRef();
   const maxRef = useRef(); 
+  const [minVal, setMinVal] = useState(0);
+  const [maxVal, setMaxVal] = useState(999999);
   
   const { search } = useLocation();
+  
+  const searchParams = new URLSearchParams(search);
+  const category = searchParams.get('cat') || 'all';
+  
+  const getCategoryName = (cat) => {
+    const nameMap = {
+      "ai": "AI Artists",
+      "logo": "Logo Design",
+      "wordpress": "WordPress",
+      "blockchain": "BlockChain",
+      "ml": "Machine Learning",
+      "design": "System Design",
+      "devops": "DevOps",
+      "illustration": "Illustration",
+      "data": "Data Entry",
+      "all": "All Services"
+    };
+    return nameMap[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+  };
+  
+  const categoryName = getCategoryName(category);
 
   const { isLoading, error, data, refetch } = useQuery({
-    queryKey: ["gigs"], 
-    queryFn: () =>
-      newRequest
-        .get(
-          `/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`
-        )
+    queryKey: ["gigs", category, minVal, maxVal, sort], 
+    queryFn: () => {
+      const min = minRef.current?.value || minVal || 0;
+      const max = maxRef.current?.value || maxVal || 999999;
+      const queryStr = category && category !== 'all' 
+        ? `?cat=${category}&min=${min}&max=${max}&sort=${sort}`
+        : `?min=${min}&max=${max}&sort=${sort}`;
+      
+      return newRequest
+        .get(`/gigs${queryStr}`)
         .then((res) => {
           return res.data;
-        }),
+        })
+        .catch((error) => {
+          console.error('Error fetching gigs:', error);
+          throw error;
+        });
+    },
   });
-
-
-  console.log(data)
 
 
   const reSort = (type) => {
@@ -37,18 +66,20 @@ const Gigs = () => {
 
   useEffect(() => {
     refetch();
-  }, [sort]);
+  }, [sort, category, refetch]);
 
   const apply = () => {
+    setMinVal(minRef.current?.value || 0);
+    setMaxVal(maxRef.current?.value || 999999);
     refetch();
   };
 
   return (
     <div className='gigs'>
       <div className="container">
-        <span className='breadcrumbs'>CodeHunt ➤ Graphics & Design ➤ </span>
-        <h1>AI Artists</h1>
-        <p>Explore the boundaries of Art & Technology with CodeHunt's AI Artists</p>
+        <span className='breadcrumbs'>FlexiLearn ➤ Services ➤ {categoryName}</span>
+        <h1>{categoryName}</h1>
+        <p>Explore {categoryName} services available on FlexiLearn</p>
 
         <div className="menu">
           <div className="left">

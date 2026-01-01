@@ -6,8 +6,25 @@ import Slide from '../../components/slide/Slide'
 import CatCard from '../../components/catCard/CatCard';
 import { cards, projects } from '../../data';
 import ProjectCard from '../../components/projectCard/ProjectCard'
+import GigCard from '../../components/gigCard/GigCard'
+import { useQuery } from '@tanstack/react-query'
+import newRequest from '../../utils/newRequest'
 
 const Home = () => {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["gigs"],
+    queryFn: () =>
+      newRequest
+        .get("/gigs?sort=sales")
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          console.error('Error fetching gigs:', error);
+          throw error;
+        }),
+  });
+
   return (
     <div className='home'>
         <Featured/>
@@ -19,6 +36,33 @@ const Home = () => {
             ))
           }
         </Slide>
+
+        {!isLoading && !error && data && data.length > 0 && (
+          <>
+            <div style={{padding: '20px', textAlign: 'center'}}>
+              <h2>Popular Services</h2>
+            </div>
+            <Slide slidesToShow={3} arrowsScroll={3}>
+              {
+                data.slice(0, 8).map(gig=>(
+                  <GigCard key={gig._id} item={gig}/>
+                ))
+              }
+            </Slide>
+          </>
+        )}
+        {isLoading && (
+          <div style={{padding: '20px', textAlign: 'center'}}>
+            <h2>Popular Services</h2>
+            <p>Loading services...</p>
+          </div>
+        )}
+        {!isLoading && error && (
+          <div style={{padding: '20px', textAlign: 'center'}}>
+            <h2>Popular Services</h2>
+            <p>Unable to load services at this time</p>
+          </div>
+        )}
 
         <div className='features'>
           <div className="container">
