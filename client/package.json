@@ -13,6 +13,7 @@
     "@stripe/stripe-js": "^2.1.6",
     "@tanstack/react-query": "^4.35.3",
     "axios": "^1.5.0",
+    "express": "^4.18.2",
     "infinite-react-carousel": "^1.2.11",
     "jspdf": "^3.0.4",
     "moment": "^2.29.4",
