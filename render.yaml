@@ -8,18 +8,6 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: MONGODB_URL
-        fromDatabase:
-          name: flexilearn-db
-          property: connectionString
-      - key: JWT_KEY
-        sync: false
-      - key: STRIPE
-        sync: false
-      - key: EMAIL_USER
-        sync: false
-      - key: EMAIL_PASSWORD
-        sync: false
 
   - type: web
     name: flexilearn-client
