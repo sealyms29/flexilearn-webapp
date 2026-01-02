@@ -7,18 +7,19 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const distPath = path.join(__dirname, 'dist');
 
-// Serve static files from dist
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static files from dist first
+app.use(express.static(distPath));
 
-// Serve index.html for root
+// Handle root route - redirect to index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
-// Serve index.html for all other routes (React Router)
-app.all('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Handle all other routes - serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(port, () => {
