@@ -11,16 +11,7 @@ const port = process.env.PORT || 3000;
 // Serve static files from dist directory (CSS, JS, images, etc.)
 app.use(express.static('dist'));
 
-// Explicitly serve index.html for root and /index.html paths
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-
-// All other routes serve index.html for React Router
+// SPA fallback: serve index.html for all routes (React Router handles navigation)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
