@@ -11,30 +11,47 @@ const port = process.env.PORT || 3000;
 const distPath = path.join(__dirname, 'dist');
 const indexPath = path.join(distPath, 'index.html');
 
-// Check if dist folder exists
-if (!fs.existsSync(distPath)) {
-  console.error(`ERROR: dist folder not found at ${distPath}`);
-  console.error('Make sure to run: npm run build');
-}
+console.log(`Starting server...`);
+console.log(`Expected dist path: ${distPath}`);
+console.log(`Dist folder exists: ${fs.existsSync(distPath)}`);
+console.log(`index.html exists: ${fs.existsSync(indexPath)}`);
 
-// Serve static files from dist directory
+// Serve static files from dist with caching
 app.use(express.static(distPath, {
-  maxAge: '1d',
+  maxAge: '1y',
   etag: false
 }));
 
-// SPA fallback: serve index.html for any request that doesn't match a file
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', distExists: fs.existsSync(distPath) });
+});
+
+// SPA fallback: all other routes serve index.html
 app.use((req, res) => {
+  console.log(`Serving index.html for route: ${req.path}`);
+  
   if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        console.error(`Error sending index.html: ${err.message}`);
+        res.status(500).send('Error loading application');
+      }
+    });
   } else {
-    console.error(`index.html not found at ${indexPath}`);
-    res.status(404).send('index.html not found. Please run: npm run build');
+    console.error(`CRITICAL: index.html not found at ${indexPath}`);
+    res.status(503).send('Application files not found. Please rebuild.');
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Serving from: ${distPath}`);
-  console.log(`index.html exists: ${fs.existsSync(indexPath)}`);
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(`Server error: ${err.message}`);
+  res.status(500).send('Internal Server Error');
+});
+
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`✓ Server running on port ${port}`);
+  console.log(`✓ Serving static files from: ${distPath}`);
 });
