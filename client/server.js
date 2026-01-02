@@ -11,9 +11,9 @@ const port = process.env.PORT || 3000;
 // Serve static files from the dist folder
 app.use(express.static('dist'));
 
-// Explicitly serve index.html for root path
+// Redirect root path to index.html
 app.get('/', (req, res) => {
-  res.sendFile('dist/index.html', { root: __dirname });
+  res.redirect('/index.html');
 });
 
 // Catch all other routes and serve index.html (for React Router)
