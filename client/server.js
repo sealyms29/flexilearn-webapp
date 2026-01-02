@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,28 +9,32 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 const distPath = path.join(__dirname, 'dist');
+const indexPath = path.join(distPath, 'index.html');
+
+// Check if dist folder exists
+if (!fs.existsSync(distPath)) {
+  console.error(`ERROR: dist folder not found at ${distPath}`);
+  console.error('Make sure to run: npm run build');
+}
 
 // Serve static files from dist directory
-app.use(express.static(distPath));
+app.use(express.static(distPath, {
+  maxAge: '1d',
+  etag: false
+}));
 
-// SPA fallback: For any route that doesn't match a static file,
-// serve index.html so React Router can handle navigation
-app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'), (err) => {
-    if (err) {
-      console.error('Error sending file:', err);
-      res.status(500).send('Error loading application');
-    }
-  });
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).send('Internal Server Error');
+// SPA fallback: serve index.html for any request that doesn't match a file
+app.use((req, res) => {
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error(`index.html not found at ${indexPath}`);
+    res.status(404).send('index.html not found. Please run: npm run build');
+  }
 });
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log(`Serving files from: ${distPath}`);
+  console.log(`Serving from: ${distPath}`);
+  console.log(`index.html exists: ${fs.existsSync(indexPath)}`);
 });
