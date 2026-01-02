@@ -12,9 +12,9 @@ const distPath = join(__dirname, 'dist');
 // Serve static files from the dist folder
 app.use(express.static(distPath));
 
-// Redirect root path to index.html
+// Serve index.html for root path (without showing it in URL)
 app.get('/', (req, res) => {
-  res.redirect('/index.html');
+  res.sendFile(join(distPath, 'index.html'));
 });
 
 // Catch all other routes and serve index.html (for React Router)
