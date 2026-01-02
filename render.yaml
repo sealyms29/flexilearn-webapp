@@ -16,7 +16,7 @@ services:
     rootDir: client
     packageManager: npm
     buildCommand: npm install --legacy-peer-deps && npm run build
-    startCommand: npm run preview
+    startCommand: npm start
     envVars:
       - key: VITE_API_URL
         value: https://flexilearn-api.onrender.com
