@@ -90,6 +90,7 @@ export const login = async (req, res, next) => {
       {
         id: user._id,
         isSeller: user.isSeller,
+        isAdmin: user.isAdmin,
       },
       process.env.JWT_KEY
     );

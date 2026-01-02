@@ -30,6 +30,7 @@ export const verifyToken = (req, res, next) => {
     console.log("Token verified successfully. User ID:", payload.id);
     req.userId = payload.id;
     req.isSeller = payload.isSeller;
+    req.isAdmin = payload.isAdmin;
     next();
   });
 };

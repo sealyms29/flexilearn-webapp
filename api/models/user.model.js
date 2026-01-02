@@ -48,6 +48,10 @@ const userSchema = new Schema({
     type: Boolean,
     default:false
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   businessType: {
     type: String,
     enum: ["individual", "sole_proprietor", "llp", "company"],

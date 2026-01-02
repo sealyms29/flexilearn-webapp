@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./Home.scss"
 import Featured from '../../components/featured/Featured'
 import TrustedBy from '../../components/trustedBy/TrustedBy'
@@ -9,8 +9,20 @@ import ProjectCard from '../../components/projectCard/ProjectCard'
 import GigCard from '../../components/gigCard/GigCard'
 import { useQuery } from '@tanstack/react-query'
 import newRequest from '../../utils/newRequest'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is admin and redirect to admin dashboard
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user?.isAdmin) {
+      navigate("/admin/dashboard");
+      return;
+    }
+  }, [navigate]);
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["gigs"],
     queryFn: () =>
@@ -106,7 +118,7 @@ const Home = () => {
               </p>
               <div className="title">
                 <img src='./img/check.png' alt=''/>
-                  Support student as a freelancer to help them grow!
+                  Support buyers as a freelancer to help them grow!
               </div>
 
               <div className="title">
