@@ -7,13 +7,16 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const distPath = path.join(__dirname, 'dist');
 
-// Serve static files from dist directory
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static files from dist (CSS, JS, images, etc.)
+app.use(express.static(distPath, {
+  index: 'index.html'  // Serve index.html for directory requests
+}));
 
-// For any route, serve index.html (React Router will handle navigation)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+// Catch-all for SPA: any unmatched route serves index.html
+app.use((req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(port, () => {
