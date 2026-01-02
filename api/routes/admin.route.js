@@ -38,7 +38,25 @@ router.get("/orders", verifyToken, verifyAdmin, async (req, res) => {
     createdAt: { $gte: date },
   }).sort({ createdAt: -1 });
 
-  res.status(200).json(orders);
+  // enrich orders with buyer/seller usernames
+  try {
+    const enriched = await Promise.all(
+      orders.map(async (o) => {
+        const buyer = await User.findById(o.buyerId).select("username");
+        const seller = await User.findById(o.sellerId).select("username");
+        const obj = o.toObject ? o.toObject() : o;
+        return {
+          ...obj,
+          buyerName: buyer?.username || null,
+          sellerName: seller?.username || null,
+        };
+      })
+    );
+
+    res.status(200).json(enriched);
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -51,15 +69,28 @@ router.get("/summary", verifyToken, verifyAdmin, async (req, res) => {
     const totalUsers = await User.countDocuments();
     const totalServices = await Gig.countDocuments();
 
-    // recent orders (limit 5)
+    // recent orders (limit 5) and populate buyer/seller usernames
     const recentOrders = orders.slice(0, 5);
+
+    const enrichedRecent = await Promise.all(
+      recentOrders.map(async (o) => {
+        const buyer = await User.findById(o.buyerId).select("username");
+        const seller = await User.findById(o.sellerId).select("username");
+        const obj = o.toObject ? o.toObject() : o;
+        return {
+          ...obj,
+          buyerName: buyer?.username || null,
+          sellerName: seller?.username || null,
+        };
+      })
+    );
 
     res.status(200).json({
       totalUsers,
       totalServices,
       totalOrders,
       totalRevenue,
-      recentOrders,
+      recentOrders: enrichedRecent,
     });
   } catch (err) {
     next(err);
@@ -69,8 +100,22 @@ router.get("/summary", verifyToken, verifyAdmin, async (req, res) => {
 /**
  * ADMIN: View all services*/
 router.get("/gigs", verifyToken, verifyAdmin, async (req, res) => {
-  const gigs = await Gig.find();
-  res.status(200).json(gigs);
+  try {
+    const gigs = await Gig.find();
+    const enriched = await Promise.all(
+      gigs.map(async (g) => {
+        const seller = await User.findById(g.userId).select("username");
+        const obj = g.toObject ? g.toObject() : g;
+        return {
+          ...obj,
+          sellerName: seller?.username || null,
+        };
+      })
+    );
+    res.status(200).json(enriched);
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
