@@ -14,7 +14,8 @@ app.get('/', (req, res) => {
 });
 
 // Serve static files from dist directory (CSS, JS, images, index.html)
-app.use(express.static('dist'));
+// Use absolute path to ensure it works on Render
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // SPA fallback: serve index.html for all other routes (React Router handles navigation)
 app.use((req, res) => {
