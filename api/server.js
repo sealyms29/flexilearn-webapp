@@ -12,6 +12,7 @@ import messageRoute from "./routes/message.route.js";
 import reviewRoute from "./routes/review.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import adminRoute from "./routes/admin.route.js";
 
 mongoose.set("strictQuery", true)
 
@@ -43,6 +44,7 @@ app.use("/api/orders",orderRoute);
 app.use("/api/conversations",conversationRoute);
 app.use("/api/messages",messageRoute);
 app.use("/api/reviews",reviewRoute);
+app.use("/api/admin", adminRoute);
 
 // middleware for error 
 app.use((err,req,res,next)=>{

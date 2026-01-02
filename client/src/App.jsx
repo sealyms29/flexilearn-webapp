@@ -21,6 +21,13 @@ import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
 import { NotificationProvider } from "./context/NotificationContext";
 import Notification from "./components/notification/Notification";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/Admindashboard";
+import AdminGigs from "./pages/admin/AdminGigs";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminTransactions from "./pages/admin/AdminTransactions";
+import AdminSummary from "./pages/admin/AdminSummary";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 function App() {
   const queryClient = new QueryClient();
@@ -94,6 +101,34 @@ function App() {
           element: <Success />,
         },
       ],
+    },
+    {
+      path: "/admin/login",
+      element: <AdminLogin />,
+    },
+    {
+      path: "/admin/dashboard",
+      element: <AdminDashboard />,
+    },
+    {
+      path: "/admin/gigs",
+      element: <AdminGigs />,
+    },
+    {
+      path: "/admin/orders",
+      element: <AdminOrders />,
+    },
+    {
+      path: "/admin/transactions",
+      element: <AdminTransactions />,
+    },
+    {
+      path: "/admin/summary",
+      element: <AdminSummary />,
+    },
+    {
+      path: "/admin/users",
+      element: <AdminUsers />,
     },
   ]);
 

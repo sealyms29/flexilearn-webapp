@@ -38,11 +38,28 @@ const Register = () => {
     });
   };
   
+  const isUnimasStudentEmail = (email) => {
+    const regex = /^[0-9]+@siswa\.unimas\.my$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
       e.preventDefault();
       
       if (!user.username || !user.email || !user.password || !user.country) {
         alert("Please fill in all fields");
+        return;
+      }
+      
+      // UNIMAS student email check
+      if (!isUnimasStudentEmail(user.email)) {
+        alert("Please use your UNIMAS student email (e.g. 123456@siswa.unimas.my)");
+        return;
+      }
+
+      // Prevent username from being an email
+      if (user.username.includes("@")) {
+        alert("Username must be your name, not an email");
         return;
       }
 
@@ -76,14 +93,13 @@ const Register = () => {
           <input
             name="username"
             type="text"
-            placeholder="arvindk25"
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>
           <input
             name="email"
             type="email"
-            placeholder="arvindnisha2002@gmail.com"
+            placeholder="123456@siswa.unimas.my"
             onChange={handleChange}
           />
           <label htmlFor="">Password</label>
@@ -92,7 +108,7 @@ const Register = () => {
           <input
             name="country"
             type="text"
-            placeholder="India"
+            placeholder="Malaysia"
             onChange={handleChange}
           />
           <button type="submit">Register</button>
@@ -136,7 +152,7 @@ const Register = () => {
           <input
             name="phone"
             type="text"
-            placeholder="+91-9695271037"
+            placeholder="+60-9695271037"
             onChange={handleChange}
           />
           <label htmlFor="">Description</label>
