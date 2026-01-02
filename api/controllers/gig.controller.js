@@ -134,6 +134,21 @@ export const createGig = async (req, res, next) => {
     next(err);
   }
 };
+
+// Admin create gig (bypass seller check)
+export const createGigAdmin = async (req, res, next) => {
+  const newGig = new Gig({
+    userId: req.userId,
+    ...req.body,
+  });
+
+  try {
+    const savedGig = await newGig.save();
+    res.status(201).json(savedGig);
+  } catch (err) {
+    next(err);
+  }
+};
 export const deleteGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
@@ -142,6 +157,27 @@ export const deleteGig = async (req, res, next) => {
 
     await Gig.findByIdAndDelete(req.params.id);
     res.status(200).send("Gig has been deleted!");
+  } catch (err) {
+    next(err);
+  }
+};
+export const updateGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+
+    if (!gig) {
+      return next(createError(404, "Gig not found"));
+    }
+
+    const updatedGig = await Gig.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedGig);
   } catch (err) {
     next(err);
   }
