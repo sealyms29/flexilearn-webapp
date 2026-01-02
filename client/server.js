@@ -8,13 +8,17 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Redirect root path to index.html BEFORE serving static files
+// Serve static files from dist directory (CSS, JS, images, etc.)
+app.use(express.static('dist'));
+
+// Explicitly serve index.html for root and /index.html paths
 app.get('/', (req, res) => {
-  res.redirect(301, '/index.html');
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
-// Serve static files from dist directory
-app.use(express.static('dist'));
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
 // All other routes serve index.html for React Router
 app.use((req, res) => {
