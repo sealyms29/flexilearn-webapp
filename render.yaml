@@ -3,6 +3,7 @@ services:
     name: flexilearn-api
     runtime: node
     rootDir: api
+    packageManager: npm
     buildCommand: npm install
     startCommand: npm start
     envVars:
@@ -13,6 +14,7 @@ services:
     name: flexilearn-client
     runtime: node
     rootDir: client
+    packageManager: npm
     buildCommand: npm install --legacy-peer-deps && npm run build
     startCommand: npm run preview
     envVars:
