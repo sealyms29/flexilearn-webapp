@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: flexilearn-api
+    runtime: node
+    rootDir: api
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URL
+        fromDatabase:
+          name: flexilearn-db
+          property: connectionString
+      - key: JWT_KEY
+        sync: false
+      - key: STRIPE
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+
+  - type: web
+    name: flexilearn-client
+    runtime: node
+    rootDir: client
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: VITE_API_URL
+        value: https://flexilearn-api.onrender.com
