@@ -4,7 +4,7 @@ services:
     runtime: node
     rootDir: api
     packageManager: npm
-    buildCommand: npm install
+    buildCommand: npm install --build-from-source
     startCommand: npm start
     envVars:
       - key: NODE_ENV
