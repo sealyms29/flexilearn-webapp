@@ -8,16 +8,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Redirect root to /index.html so URL is visible in browser
-app.get('/', (req, res) => {
-  res.redirect(301, '/index.html');
-});
-
-// Serve static files from dist directory (CSS, JS, images, index.html)
+// Serve static files from dist directory (CSS, JS, images, etc.)
 // Use absolute path to ensure it works on Render
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// SPA fallback: serve index.html for all other routes (React Router handles navigation)
+// SPA: serve index.html for all routes (React Router handles navigation)
+// This serves index.html for root (/) and all other routes
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
