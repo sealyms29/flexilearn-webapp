@@ -1,15 +1,16 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const distPath = join(__dirname, 'dist');
 
 // Serve static files from the dist folder
-app.use(express.static('dist'));
+app.use(express.static(distPath));
 
 // Redirect root path to index.html
 app.get('/', (req, res) => {
@@ -18,7 +19,7 @@ app.get('/', (req, res) => {
 
 // Catch all other routes and serve index.html (for React Router)
 app.get('*', (req, res) => {
-  res.sendFile('dist/index.html', { root: __dirname });
+  res.sendFile(join(distPath, 'index.html'));
 });
 
 app.listen(port, () => {
