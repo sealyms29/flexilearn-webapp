@@ -7,7 +7,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
   },
   server: {
     host: '0.0.0.0',
