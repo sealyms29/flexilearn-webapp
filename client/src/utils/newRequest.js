@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const newRequest = axios.create({
-    baseURL: "http://localhost:8800/api/",
+    // Automatically switches between localhost and your Render backend
+    baseURL: import.meta.env.MODE === "development" 
+        ? "http://localhost:8800/api/" 
+        : "https://flexilearn-webapp-tcbn.onrender.com/api/", 
     withCredentials: true,
 });
 
