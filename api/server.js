@@ -18,14 +18,14 @@ mongoose.set("strictQuery", true)
 import dotenv from "dotenv";
 dotenv.config();
 
-const connect = async () =>{
-    try {
-        await mongoose.connect(process.env.MONGODB_URL);
-        console.log("DB Connection Successful")
-      }
-      catch (error) {
-        console.log(error);
-      }
+const connect = async () => {
+  try {
+    console.log("Connecting to:", process.env.MONGODB_URL); // Add this log to verify what the app sees
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("DB Connection Successful");
+  } catch (error) {
+    console.log("Connection Error Details:", error);
+  }
 };
 
 // 2- after writing login axios concept in Login.jsx =>to connect frontend server to backend use this and before use instal yarn add cors in api section 
