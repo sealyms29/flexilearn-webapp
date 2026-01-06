@@ -8,6 +8,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Test email connection on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.warn("⚠️  Email Service WARNING:", error.message);
+    console.warn("Email notifications will be disabled. Please fix credentials in .env");
+  } else {
+    console.log("✅ Email Service Connected Successfully");
+  }
+});
+
 /**
  * Send email verification link
  */

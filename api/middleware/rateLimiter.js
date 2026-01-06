@@ -16,9 +16,6 @@ export const authLimiter = rateLimit({
   message: "Too many login attempts, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    return req.body.username || req.ip;
-  },
 });
 
 // Strict rate limiter for password reset

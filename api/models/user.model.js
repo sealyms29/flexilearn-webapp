@@ -22,7 +22,7 @@ const userSchema = new Schema({
   },
   isVerified: {
     type: Boolean,
-    default: false, 
+    default: true, // All users are verified by default
   },
   studentId: {
     type: String, 
@@ -60,30 +60,6 @@ const userSchema = new Schema({
   registrationNumber: {
     type: String,
     required: false,
-  },
-  emailVerificationToken: {
-    type: String,
-    required: false,
-  },
-  emailVerificationExpires: {
-    type: Date,
-    required: false,
-  },
-  passwordResetToken: {
-    type: String,
-    required: false,
-  },
-  passwordResetExpires: {
-    type: Date,
-    required: false,
-  },
-  lastLoginAt: {
-    type: Date,
-    required: false,
-  },
-  loginAttempts: {
-    type: Number,
-    default: 0,
   },
   lockedUntil: {
     type: Date,
