@@ -178,6 +178,8 @@ const AdminGigs = () => {
                   <th>Title</th>
                   <th>Price</th>
                   <th>Description</th>
+                  <th>Seller</th>
+                  <th>Seller ID</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -188,6 +190,8 @@ const AdminGigs = () => {
                       <td className="title">{gig.title}</td>
                       <td className="price">RM {gig.price}</td>
                       <td className="desc">{gig.desc?.substring(0, 50)}...</td>
+                      <td className="seller">{gig.sellerName || gig.userId}</td>
+                      <td className="seller-id">{gig.userId}</td>
                       <td className="actions">
                         <button
                           className="btn-edit"
@@ -208,7 +212,7 @@ const AdminGigs = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="empty-state">
+                    <td colSpan="6" className="empty-state">
                       No services found
                     </td>
                   </tr>
