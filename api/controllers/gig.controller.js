@@ -119,9 +119,9 @@ export const seedGigs = async (req, res, next) => {
 };
 
 export const createGig = async (req, res, next) => {
-  if (!req.isSeller)
-    return next(createError(403, "Only sellers can create a gig!"));
-
+  // Allow all authenticated users to create gigs (not just sellers)
+  // Users can become sellers by creating gigs
+  
   const newGig = new Gig({
     userId: req.userId,
     ...req.body,
@@ -129,6 +129,11 @@ export const createGig = async (req, res, next) => {
 
   try {
     const savedGig = await newGig.save();
+    
+    // Mark user as seller after creating first gig
+    const User = require("../models/user.model.js").default;
+    await User.findByIdAndUpdate(req.userId, { isSeller: true });
+    
     res.status(201).json(savedGig);
   } catch (err) {
     next(err);
