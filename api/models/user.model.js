@@ -61,6 +61,34 @@ const userSchema = new Schema({
     type: String,
     required: false,
   },
+  emailVerificationToken: {
+    type: String,
+    required: false,
+  },
+  emailVerificationExpires: {
+    type: Date,
+    required: false,
+  },
+  passwordResetToken: {
+    type: String,
+    required: false,
+  },
+  passwordResetExpires: {
+    type: Date,
+    required: false,
+  },
+  lastLoginAt: {
+    type: Date,
+    required: false,
+  },
+  loginAttempts: {
+    type: Number,
+    default: 0,
+  },
+  lockedUntil: {
+    type: Date,
+    required: false,
+  },
 },{
   timestamps:true
 });

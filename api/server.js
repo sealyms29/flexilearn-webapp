@@ -1,8 +1,8 @@
-
 import express  from "express";
 const app = express()
 import userRoute from "./routes/user.route.js";
 import mongoose from "mongoose";
+import helmet from "helmet";
 
 import authRoute from "./routes/auth.route.js";
 import gigRoute from "./routes/gig.route.js";
@@ -13,6 +13,8 @@ import reviewRoute from "./routes/review.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import adminRoute from "./routes/admin.route.js";
+import { sanitizeInput, handleValidationErrors, preventNoSQLInjection } from "./middleware/sanitize.js";
+import { apiLimiter, authLimiter, passwordResetLimiter } from "./middleware/rateLimiter.js";
 
 mongoose.set("strictQuery", true)
 
@@ -33,11 +35,21 @@ const connect = async () => {
 app.use(cors({origin:["http://localhost:5173", "http://localhost:5174", "https://flexilearn-web.onrender.com"], credentials:true}));
 // we are sending cookies from frontend to backend so credential true is needed
 
+// Security middleware
+app.use(helmet()); // Add security headers
+app.use(express.json());
+app.use(cookieParser());
+
+// Input validation and sanitization
+app.use(preventNoSQLInjection); // Prevent NoSQL injection
+app.use(apiLimiter); // General rate limiting
+
 app.use(express.json());
 app.use(cookieParser());
 
  
-app.use("/api/auth",authRoute);
+// Auth routes with strict rate limiting
+app.use("/api/auth", authLimiter, sanitizeInput, handleValidationErrors, authRoute);
 app.use("/api/users",userRoute);
 app.use("/api/gigs",gigRoute);
 app.use("/api/orders",orderRoute);
