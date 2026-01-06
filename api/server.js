@@ -10,6 +10,7 @@ import orderRoute from "./routes/order.route.js";
 import conversationRoute from "./routes/conversation.route.js";
 import messageRoute from "./routes/message.route.js";
 import reviewRoute from "./routes/review.route.js";
+import uploadRoute from "./routes/upload.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import adminRoute from "./routes/admin.route.js";
@@ -47,7 +48,9 @@ app.use(apiLimiter); // General rate limiting
 app.use(express.json());
 app.use(cookieParser());
 
- 
+// Serve uploaded files as static assets
+app.use("/uploads", express.static("uploads"));
+
 // Auth routes with strict rate limiting
 app.use("/api/auth", authLimiter, sanitizeInput, handleValidationErrors, authRoute);
 app.use("/api/users",userRoute);
@@ -56,6 +59,7 @@ app.use("/api/orders",orderRoute);
 app.use("/api/conversations",conversationRoute);
 app.use("/api/messages",messageRoute);
 app.use("/api/reviews",reviewRoute);
+app.use("/api/upload", uploadRoute);
 app.use("/api/admin", adminRoute);
 
 // middleware for error 

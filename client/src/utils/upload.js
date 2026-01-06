@@ -1,31 +1,24 @@
-// import axios from "axios";
+import newRequest from "./newRequest";
 
 const upload = async (file) => {
   const data = new FormData();
   data.append("file", file);
-  data.append("upload_preset", "FlexiLearn");
-  data.append("cloud_name", "technova");
 
   try {
-    const response = await fetch(
-      "https://api.cloudinary.com/v1_1/technova/image/upload",
-      {
-        method: "post",
-        body: data,
-      }
-    );
+    const response = await newRequest.post("/upload/upload", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-    if (!response.ok) {
-      throw new Error("Failed to upload image");
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Upload failed");
     }
 
-    const responseData = await response.json();
-    const imageUrl = responseData.secure_url;
-
-    return imageUrl;
+    return response.data.secure_url;
   } catch (err) {
-    console.error("Error uploading image:", err);
-    throw err; // Rethrow the error for handling in the calling code
+    console.error("Error uploading image:", err.message);
+    throw err;
   }
 };
 
