@@ -190,7 +190,7 @@ export const login = async (req, res, next) => {
       
       // Lock account after 10 failed attempts (not 5)
       if (user.loginAttempts >= 10) {
-        user.lockedUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes (not 15)
+        user.lockedUntil = new Date(Date.now() + 10 * 1000); // 10 seconds
       }
       
       await user.save();
