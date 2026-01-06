@@ -171,6 +171,11 @@ export const login = async (req, res, next) => {
     if (user.lockedUntil && user.lockedUntil > new Date()) {
       const remainingTime = Math.ceil((user.lockedUntil - new Date()) / 1000);
       return next(createError(403, `Account locked. Try again in ${remainingTime} seconds.`));
+    } else if (user.lockedUntil && user.lockedUntil <= new Date()) {
+      // Unlock account if lock period expired
+      user.loginAttempts = 0;
+      user.lockedUntil = undefined;
+      await user.save();
     }
     
     //Block non-students
@@ -183,9 +188,9 @@ export const login = async (req, res, next) => {
       // Increment login attempts
       user.loginAttempts = (user.loginAttempts || 0) + 1;
       
-      // Lock account after 5 failed attempts
-      if (user.loginAttempts >= 5) {
-        user.lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+      // Lock account after 10 failed attempts (not 5)
+      if (user.loginAttempts >= 10) {
+        user.lockedUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes (not 15)
       }
       
       await user.save();
