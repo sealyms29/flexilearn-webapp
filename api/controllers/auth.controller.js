@@ -291,7 +291,7 @@ export const login = async (req, res, next) => {
 
     //Block unverified students
     if (!user.isVerified) {
-      return next(createError(403, "Student account not verified. Please check your email."));
+      return next(createError(403, "Student account not verified. Please check your email to verify your account. If you didn't receive the email, use the resend option."));
     }
 
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
