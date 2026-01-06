@@ -17,9 +17,9 @@ const transporter = nodemailer.createTransport({
 const sendOrderEmail = async (userEmail, userName, order) => {
   try {
     const mailOptions = {
-      from: process.env.EMAIL_USER || "noreply@codehunt.com",
+      from: process.env.EMAIL_USER || "noreply@flexilearn.com",
       to: userEmail,
-      subject: `Order Confirmation - CodeHunt #${order._id.toString().slice(-8).toUpperCase()}`,
+      subject: `Order Confirmation - FlexiLearn #${order._id.toString().slice(-8).toUpperCase()}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -56,13 +56,13 @@ const sendOrderEmail = async (userEmail, userName, order) => {
             </div>
             
             <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 4px; margin: 20px 0;">
-              <p style="margin: 0; color: #1565c0;"><strong>Next Steps:</strong> You can track your order progress by logging into your CodeHunt account and visiting your orders page.</p>
+              <p style="margin: 0; color: #1565c0;"><strong>Next Steps:</strong> You can track your order progress by logging into your FlexiLearn account and visiting your orders page.</p>
             </div>
             
-            <p style="color: #666; font-size: 14px;">If you have any questions about your order, please contact us at support@codehunt.com</p>
+            <p style="color: #666; font-size: 14px;">If you have any questions about your order, please contact us at support@flexilearn.com</p>
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #999; font-size: 12px;">
-              <p>© 2025 CodeHunt. All rights reserved.</p>
+              <p>© 2025 FlexiLearn. All rights reserved.</p>
               <p>This is an automated email, please do not reply directly.</p>
             </div>
           </div>

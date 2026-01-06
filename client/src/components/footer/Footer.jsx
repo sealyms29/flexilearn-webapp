@@ -36,8 +36,8 @@ const Footer = () => {
             <h2>Support</h2>
             <span>Help & Support</span>
             <span>Trust & Safety</span>
-            <span>Selling on CodeHunt</span>
-            <span>Buying on CodeHunt</span>
+            <span>Selling on FlexiLearn</span>
+            <span>Buying on FlexiLearn</span>
           </div>
           <div className="item">
             <h2>Community</h2>
@@ -54,15 +54,15 @@ const Footer = () => {
             <span>Community Standards</span>
           </div>
           <div className="item">
-            <h2>More From CodeHunt</h2>
-            <span>CodeHunt Business</span>
-            <span>CodeHunt Pro</span>
-            <span>CodeHunt Logo Maker</span>
-            <span>CodeHunt Guides</span>
+            <h2>More From FlexiLearn</h2>
+            <span>FlexiLearn Business</span>
+            <span>FlexiLearn Pro</span>
+            <span>FlexiLearn Logo Maker</span>
+            <span>FlexiLearn Guides</span>
             <span>Get Inspired</span>
-            <span>CodeHunt Select</span>
+            <span>FlexiLearn Select</span>
             <span>ClearVoice</span>
-            <span>CodeHunt Workspace</span>
+            <span>FlexiLearn Workspace</span>
             <span>Learn</span>
             <span>Working Not Working</span>
           </div>
@@ -72,8 +72,8 @@ const Footer = () => {
 
         <div className="bottom">
           <div className="left">
-            <h2>CodeHunt</h2>
-            <span>Made with ❤️ Arvind © 2023 || CodeHunt</span>
+            <h2>FlexiLearn</h2>
+            <span>Made with ❤️ technova © 2023 || FlexiLearn</span>
           </div>
           <div className="right">
             <div className="social">

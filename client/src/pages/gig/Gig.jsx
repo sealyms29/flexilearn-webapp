@@ -109,7 +109,7 @@ const Gig = () => {
       {isLoading ? "loading" : error ? "Something went wrong" :
       <div className="container">
         <div className="left">
-          <span className="breadCrumbs">CodeHunt ➤  Graphics & Design ➤ Gig ➤ </span>
+          <span className="breadCrumbs">FlexiLearn ➤  Graphics & Design ➤ Gig ➤ </span>
           <h1>{data.title}</h1>
             {isLoadingUser ? ("loading") : errorUser ? ("Something went wrong!") : (
               <div className="user">

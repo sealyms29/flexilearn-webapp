@@ -3,12 +3,12 @@
 const upload = async (file) => {
   const data = new FormData();
   data.append("file", file);
-  data.append("upload_preset", "CodeHunt");
-  data.append("cloud_name", "arvindkumar");
+  data.append("upload_preset", "FlexiLearn");
+  data.append("cloud_name", "technova");
 
   try {
     const response = await fetch(
-      "https://api.cloudinary.com/v1_1/arvindkumar/image/upload",
+      "https://api.cloudinary.com/v1_1/technova/image/upload",
       {
         method: "post",
         body: data,
