@@ -1,0 +1,211 @@
+.becomeSeller {
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px;
+  }
+
+  .wrapper {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 50px;
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: 40px;
+
+    h1 {
+      color: #333;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+    }
+  }
+
+  .successMessage {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .errorMessage {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 40px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+
+      &:nth-child(n + 7) {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        &::placeholder {
+          color: #999;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        font-family: 'Roboto', sans-serif;
+      }
+    }
+
+    .submitBtn {
+      grid-column: 1 / -1;
+      padding: 14px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .benefits {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+
+    h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        color: #555;
+        padding: 10px 0;
+        padding-left: 30px;
+        position: relative;
+        line-height: 1.6;
+
+        &:before {
+          content: "✓";
+          position: absolute;
+          left: 0;
+          color: #667eea;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .loginPrompt {
+    text-align: center;
+    padding: 60px 20px;
+
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    button {
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .becomeSeller {
+    .wrapper {
+      padding: 30px 20px;
+    }
+
+    form {
+      grid-template-columns: 1fr !important;
+    }
+
+    .title {
+      h1 {
+        font-size: 24px;
+      }
+    }
+  }
+}
