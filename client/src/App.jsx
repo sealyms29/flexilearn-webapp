@@ -23,6 +23,7 @@ import { NotificationProvider } from "./context/NotificationContext";
 import Notification from "./components/notification/Notification";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/Admindashboard";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminGigs from "./pages/admin/AdminGigs";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminTransactions from "./pages/admin/AdminTransactions";
@@ -109,6 +110,10 @@ function App() {
     {
       path: "/admin/dashboard",
       element: <AdminDashboard />,
+    },
+    {
+      path: "/admin/analytics",
+      element: <AdminAnalytics />,
     },
     {
       path: "/admin/gigs",

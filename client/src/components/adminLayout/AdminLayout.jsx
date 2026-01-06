@@ -27,6 +27,7 @@ const AdminLayout = ({ children }) => {
 
   const navItems = [
     { path: "/admin/dashboard", label: "Dashboard", icon: "📊" },
+    { path: "/admin/analytics", label: "Analytics", icon: "📈" },
     { path: "/admin/gigs", label: "Services", icon: "🎯" },
     { path: "/admin/orders", label: "Orders", icon: "📦" },
     { path: "/admin/transactions", label: "Transactions", icon: "💳" },
