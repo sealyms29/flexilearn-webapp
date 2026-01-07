@@ -113,11 +113,13 @@ const Add = () => {
             <input
               type="text"
               name="title"
+              value={state.title}
               placeholder="e.g. I will do something I'm really good at"
               onChange={handleChange}
             />
             <label htmlFor="">Category</label>
-            <select name="cat" id="cat" onChange={handleChange}>
+            <select name="cat" id="cat" value={state.cat} onChange={handleChange}>
+              <option value="">Select a category</option>
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
@@ -144,6 +146,7 @@ const Add = () => {
             <label htmlFor="">Description</label>
             <textarea
               name="desc"
+              value={state.desc}
               id=""
               placeholder="Brief descriptions to introduce your service to customers"
               cols="0"
@@ -157,12 +160,14 @@ const Add = () => {
             <input
               type="text"
               name="shortTitle"
+              value={state.shortTitle}
               placeholder="e.g. One-page web design"
               onChange={handleChange}
             />
             <label htmlFor="">Short Description</label>
             <textarea
               name="shortDesc"
+              value={state.shortDesc}
               onChange={handleChange}
               id=""
               placeholder="Short description of your service"
@@ -197,7 +202,7 @@ const Add = () => {
               ))}
             </div>
             <label htmlFor="">Price</label>
-            <input type="number" onChange={handleChange} name="price" />
+            <input type="number" value={state.price} onChange={handleChange} name="price" />
           </div>
         </div>
       </div>
