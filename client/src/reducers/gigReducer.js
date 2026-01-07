@@ -1,7 +1,7 @@
 export const INITIAL_STATE = {
   userId: "", // Will be set dynamically in Add.jsx
   title: "",
-  cat: "",
+  cat: "design",
   cover: "",
   images: [],
   desc: "",

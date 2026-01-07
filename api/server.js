@@ -1,5 +1,5 @@
 import express  from "express";
-const app = express()
+const app = express();
 import userRoute from "./routes/user.route.js";
 import mongoose from "mongoose";
 import helmet from "helmet";
