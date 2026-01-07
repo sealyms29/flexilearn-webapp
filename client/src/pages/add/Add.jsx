@@ -79,7 +79,13 @@ const Add = () => {
 
   const createGig = async () => {
     try {
-      const response = await newRequest.post("/gigs", state);
+      const gigData = {
+        ...state,
+        deliveryTime: Number(state.deliveryTime),
+        revisionNumber: Number(state.revisionNumber),
+        price: Number(state.price),
+      };
+      const response = await newRequest.post("/gigs", gigData);
       return response.data; // Assuming your server responds with the created gig data
     } catch (error) {
       throw error; // Rethrow the error to let React Query handle it
@@ -91,12 +97,30 @@ const Add = () => {
       queryClient.invalidateQueries(["myGigs"]);
       navigate("/mygigs");
     },
+    onError: (error) => {
+      console.error("Error creating gig:", error);
+      alert(error.response?.data || "Error creating gig. Please try again.");
+    },
   });
   const handleSubmit = (e) => {
     e.preventDefault();
     
     if (!state.title || !state.cat || !state.desc || !state.shortTitle || !state.shortDesc) {
       alert("Please fill in all required fields");
+      return;
+    }
+
+    const deliveryTime = Number(state.deliveryTime);
+    const revisionNumber = Number(state.revisionNumber);
+    const price = Number(state.price);
+
+    if (isNaN(deliveryTime) || isNaN(revisionNumber) || isNaN(price)) {
+      alert("Please set valid numbers for delivery time, revision number, and price");
+      return;
+    }
+
+    if (deliveryTime <= 0 || revisionNumber <= 0 || price <= 0) {
+      alert("Delivery time, revision number, and price must be greater than 0");
       return;
     }
     
@@ -175,11 +199,12 @@ const Add = () => {
               rows="10"
             ></textarea>
             <label htmlFor="">Delivery Time (e.g. 3 days)</label>
-            <input type="number" name="deliveryTime" onChange={handleChange} />
+            <input type="number" name="deliveryTime" value={state.deliveryTime} onChange={handleChange} />
             <label htmlFor="">Revision Number</label>
             <input
               type="number"
               name="revisionNumber"
+              value={state.revisionNumber}
               onChange={handleChange}
             />
             <label htmlFor="">Add Features</label>
